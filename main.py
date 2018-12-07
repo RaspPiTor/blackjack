@@ -7,6 +7,9 @@ import game_manager
 
 class GUI(ttk.Frame):
     def __init__(self):
+        '''
+        Create the GUI and initiate the game manager.
+        '''
         ttk.Frame.__init__(self)
         score_frame = ttk.Frame(self)
         score_frame.grid(row=0, column=0, columnspan=10)
@@ -30,15 +33,26 @@ class GUI(ttk.Frame):
         self.start()
 
     def render_hand(self):
+        '''
+        Used to display the player hand and player total.
+        '''
         self.cards['text'] = '\n'.join(map(lambda x: '%s of %s' % (x[1], x[0]),
                                            self.manager.player))
         self.totals['text'] = ', '.join(map(str, self.manager.totals(True)))
 
     def start(self):
+        '''
+        Starts the game manager and renders hand
+        '''
         self.manager.start()
         self.render_hand()
 
     def stick(self):
+        '''
+        Called when either the player clicks stick, or the player goes bust.
+        It checks who is the winner, increments the counter as appropriate,
+        and gives a message about the winner.
+        '''
         winner = self.manager.winner()
         if winner == 'PLAYER':
             self.player_score['text'] = str(int(self.player_score['text']) + 1)
@@ -49,6 +63,10 @@ class GUI(ttk.Frame):
         self.start()
 
     def draw(self):
+        '''
+        Draws one card, and checks if the player is bust, if they are bust,
+        calls stick function.
+        '''
         if self.manager.totals(True):
             self.manager.draw_one()
             self.render_hand()
@@ -59,8 +77,10 @@ class GUI(ttk.Frame):
         else:
             self.stick()
 
-
-if __name__ == '__main__':
+def main():
     gui = GUI()
     gui.grid()
     gui.mainloop()
+
+if __name__ == '__main__':
+    main()
