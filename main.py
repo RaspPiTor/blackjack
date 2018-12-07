@@ -4,6 +4,7 @@ import tkinter as tk
 
 import game_manager
 
+
 class GUI(ttk.Frame):
     def __init__(self):
         ttk.Frame.__init__(self)
@@ -24,16 +25,19 @@ class GUI(ttk.Frame):
         self.cards.grid(row=2, column=0, columnspan=2, sticky='w')
         ttk.Button(self, text='Stick', command=self.stick).grid(row=3, column=0)
         ttk.Button(self, text='Draw', command=self.draw).grid(row=3, column=1)
-        
+
         self.manager = game_manager.Manager()
         self.start()
+
     def render_hand(self):
         self.cards['text'] = '\n'.join(map(lambda x: '%s of %s' % (x[1], x[0]),
                                            self.manager.player))
         self.totals['text'] = ', '.join(map(str, self.manager.totals(True)))
+
     def start(self):
         self.manager.start()
         self.render_hand()
+
     def stick(self):
         winner = self.manager.winner()
         if winner == 'PLAYER':
@@ -43,6 +47,7 @@ class GUI(ttk.Frame):
             self.dealer_score['text'] = str(int(self.dealer_score['text']) + 1)
             messagebox.Message(self, message='Dealer won').show()
         self.start()
+
     def draw(self):
         if self.manager.totals(True):
             self.manager.draw_one()
